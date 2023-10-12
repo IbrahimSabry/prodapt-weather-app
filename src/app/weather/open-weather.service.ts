@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ICity, IForecastData, ILocation, IWeatherData } from './WeatherDTO';
+import { IWeatherData, ILocation } from './WeatherDTO';
 
 
 const baseUrl = 'https://api.openweathermap.org/';
@@ -16,20 +16,26 @@ export class OpenWeatherService {
   constructor(private http: HttpClient) { }
 
   // API call for search for location
-  searchLocations(searchText: string): Observable<ILocation[]>{
-    const url = `${baseUrl}geo/1.0/direct?q=${searchText}&limit=5&appid=${apiKey}`;
-    return this.http.get<ILocation[]>(url);
+  searchLocations(searchText: string): Observable<ILocation[]> {
+    const params = {
+      q: searchText,
+      limit: 5,
+      appid: apiKey
+    };
+    const url = `${baseUrl}geo/1.0/direct`;
+    return this.http.get<ILocation[]>(url, { params });
   }
 
-  // API call for current weather
-  getCurrentWeather(lat: number, lon : number): Observable<IWeatherData> {
-    const url = `${baseUrl}data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`;
-    return this.http.get<IWeatherData>(url);
-  }
+  // API call to get weather data and forcast
+  getWeather(lat: number, lon: number): Observable<IWeatherData> {
+    const params = {
+      lat: lat.toString(),
+      lon: lon.toString(),
+      exclude: 'hourly,minutely,alerts',
+      units: 'metric',
+      appid: apiKey
+    };
 
-  // API call for 5-day forecast
-  getFiveDayForecast(lat: number, lon : number): Observable<IForecastData> {
-    const url = `${baseUrl}data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}`;
-    return this.http.get<IForecastData>(url);
+    return this.http.get<IWeatherData>(`${baseUrl}data/2.5/onecall`, { params });
   }
 }
