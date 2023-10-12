@@ -1,1 +1,21 @@
-<p>show-weather works!</p>
+<mat-form-field>
+    <input matInput [formControl]="searchInput" [matAutocomplete]="auto">
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="getWeather($event)">
+        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+            {{ option.name }} - {{option.country}}
+        </mat-option>
+    </mat-autocomplete>
+</mat-form-field>
+
+<p *ngIf="currentWeather">
+    Current temperature: {{currentWeather.main.temp}}
+</p>
+
+<div *ngIf="fiveDayForcast">
+    The forcast for the next 5 days:
+    <ul>
+        <li *ngFor="let day of fiveDayForcast.list">
+            temperature is: {{day.main.temp}}
+        </li>
+    </ul>
+</div>
