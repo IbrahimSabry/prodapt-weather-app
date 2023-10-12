@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { OpenWeatherService } from '../open-weather.service';
 import { IWeatherData, ILocation } from '../WeatherDTO';
-import { Observable, debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs';
+import { Observable, catchError, debounceTime, distinctUntilChanged, filter, map, switchMap } from 'rxjs';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-show-weather',
@@ -18,7 +19,7 @@ export class ShowWeatherComponent implements OnInit {
 
   weatherData$!: Observable<IWeatherData>;
 
-  constructor(private weatherService: OpenWeatherService) { }
+  constructor(private weatherService: OpenWeatherService, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.searchForLocation();
@@ -27,13 +28,17 @@ export class ShowWeatherComponent implements OnInit {
   searchForLocation() {
     this.filteredLocations$ = this.searchInput.valueChanges.pipe(
       debounceTime(300),
-      switchMap(() => this.weatherService.searchLocations(this.searchInput.value))
-    );
+      filter((searchText) => !!searchText),
+      switchMap((searchText) => this.weatherService.searchLocations(searchText).pipe(
+        catchError((error) => {
+          this.showError(error);
+          return [];
+        }))
+    ));
   }
 
   getWeather(event: MatAutocompleteSelectedEvent): void {
     const selectedLocation: ILocation = event.option.value;
-    this.searchInput.patchValue(selectedLocation.name);
 
     this.weatherData$ = this.weatherService.getWeather(selectedLocation.lat, selectedLocation.lon).pipe(
       map((data: IWeatherData) => ({
@@ -41,5 +46,15 @@ export class ShowWeatherComponent implements OnInit {
         daily: data.daily.slice(1, 6)
       }))
     )
+  }
+
+  displayFn(option: ILocation): string {
+    return option ? option.name : '';
+  }
+
+  showError(errorMessage: string) {
+    this.snackBar.open(errorMessage, 'Close', {
+      duration: 5000,
+    });
   }
 }
