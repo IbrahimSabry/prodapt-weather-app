@@ -1,6 +1,6 @@
 <mat-form-field>
     <input matInput [formControl]="searchInput" [matAutocomplete]="auto">
-    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="getWeather($event)">
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayLocationName" (optionSelected)="getWeather($event)">
         <mat-option *ngFor="let option of filteredLocations$ | async" [value]="option">
             {{ option.name }} - {{option.country}}
         </mat-option>

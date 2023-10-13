@@ -1,60 +1,59 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { OpenWeatherService } from '../open-weather.service';
 import { IWeatherData, ILocation } from '../WeatherDTO';
-import { Observable, catchError, debounceTime, distinctUntilChanged, filter, map, switchMap } from 'rxjs';
+import { Observable, Subscription, debounceTime, filter, tap } from 'rxjs';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Store } from '@ngrx/store';
+import * as AppActions from '../../store/app.actions';
+import { selectLocationsData, selectWeatherData } from '../../store/app.selectors';
+import { select } from '@ngrx/store';
 
 @Component({
   selector: 'app-show-weather',
   templateUrl: './show-weather.component.html',
   styleUrls: ['./show-weather.component.scss']
 })
-export class ShowWeatherComponent implements OnInit {
+export class ShowWeatherComponent implements OnDestroy {
 
   searchInput = new FormControl();
+
+  searchLocationSubscription!: Subscription;
 
   filteredLocations$!: Observable<ILocation[]>;
 
   weatherData$!: Observable<IWeatherData>;
 
-  constructor(private weatherService: OpenWeatherService, private snackBar: MatSnackBar) { }
+  constructor(private store: Store) {}
 
   ngOnInit(): void {
-    this.searchForLocation();
+    this.watchTheState();
+    this.searchTextSubscriber();
   }
 
-  searchForLocation() {
-    this.filteredLocations$ = this.searchInput.valueChanges.pipe(
+  watchTheState(){
+    this.filteredLocations$ = this.store.pipe(select(selectLocationsData));
+    this.weatherData$ = this.store.pipe(select(selectWeatherData));
+  }
+
+  searchTextSubscriber() {
+    this.searchLocationSubscription = this.searchInput.valueChanges.pipe(
       debounceTime(300),
       filter((searchText) => !!searchText),
-      switchMap((searchText) => this.weatherService.searchLocations(searchText).pipe(
-        catchError((error) => {
-          this.showError(error);
-          return [];
-        }))
-    ));
+      tap((searchText) =>
+        this.store.dispatch(AppActions.loadLocationsData({ searchText })),
+      )).subscribe();
   }
 
   getWeather(event: MatAutocompleteSelectedEvent): void {
-    const selectedLocation: ILocation = event.option.value;
-
-    this.weatherData$ = this.weatherService.getWeather(selectedLocation.lat, selectedLocation.lon).pipe(
-      map((data: IWeatherData) => ({
-        ...data,
-        daily: data.daily.slice(1, 6)
-      }))
-    )
+    const location: ILocation = event.option.value;
+    this.store.dispatch(AppActions.loadWeatherData({ lat: location.lat, lon: location.lon }));
   }
 
-  displayFn(option: ILocation): string {
+  displayLocationName(option: ILocation): string {
     return option ? option.name : '';
   }
 
-  showError(errorMessage: string) {
-    this.snackBar.open(errorMessage, 'Close', {
-      duration: 5000,
-    });
+  ngOnDestroy(): void {
+    this.searchLocationSubscription.unsubscribe()
   }
 }

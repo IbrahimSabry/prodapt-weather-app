@@ -7,6 +7,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorInterceptor } from './shared/error.interceptor.service';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { ErrorInterceptor } from './shared/error.interceptor.service';
     BrowserModule,
     AppRoutingModule,
     SharedModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    StoreModule.forRoot(),
+    EffectsModule.forRoot()
   ],
   providers: [
     {
@@ -24,6 +28,7 @@ import { ErrorInterceptor } from './shared/error.interceptor.service';
       useClass: ErrorInterceptor,
       multi: true,
     },
-  ],  bootstrap: [AppComponent]
+  ],  
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
