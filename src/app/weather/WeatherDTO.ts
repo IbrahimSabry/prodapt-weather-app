@@ -28,7 +28,7 @@ interface ICurrentWeather {
     };
 }
 
-interface IDailyForecast {
+export interface IDailyForecast {
     dt: number;
     sunrise: number;
     sunset: number;

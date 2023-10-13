@@ -35,14 +35,14 @@ export class WeatherEffects {
   loadWeatherData$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AppActions.loadWeatherData),
-      switchMap(({ lat, lon }) =>
+      switchMap(({ lat, lon, numberOfDays }) =>
         this.openWeatherService.getWeather(lat, lon).pipe(
           map((res: IWeatherData) => {
             this.toastService.showSuccess('Weather data has been loaded successfully');
             return AppActions.loadWeatherDataSuccess({
               data: {
                 ...res,
-                daily: res.daily.slice(1, 6)
+                daily: res.daily.slice(1, numberOfDays + 1)
               }
             })
           }),
