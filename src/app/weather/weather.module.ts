@@ -5,7 +5,7 @@ import { WeatherRoutingModule } from './weather-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { LocationsReducer, weatherReducer } from '../store/app.reducer';
+import { LocationsReducer, SelectedLocationReducer, weatherReducer } from '../store/app.reducer';
 import { WeatherEffects } from '../store/app.effects';
 
 
@@ -19,6 +19,7 @@ import { WeatherEffects } from '../store/app.effects';
     WeatherRoutingModule,
     SharedModule,
     StoreModule.forFeature('locations', LocationsReducer),
+    StoreModule.forFeature('selectedLocation', SelectedLocationReducer),
     StoreModule.forFeature('weather', weatherReducer),
     EffectsModule.forFeature([WeatherEffects]),
   ]

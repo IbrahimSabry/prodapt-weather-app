@@ -8,6 +8,14 @@ export const selectLocationsData = createSelector(
   (state) => state.data
 );
 
+const selectSelectedLocationState = createFeatureSelector<AppState>('selectedLocation');
+
+export const selectSelectedLocationData = createSelector(
+  selectSelectedLocationState,
+  (state) => state.data
+);
+
+
 const selectWeatherState = createFeatureSelector<AppState>('weather');
 
 export const selectWeatherData = createSelector(

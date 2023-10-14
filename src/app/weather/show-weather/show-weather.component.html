@@ -1,8 +1,8 @@
 <h3>Search for your location:</h3>
 <mat-form-field>
     <input matInput [formControl]="searchInput" [matAutocomplete]="auto">
-    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayLocationName" (optionSelected)="getWeather($event)">
-        <mat-option *ngFor="let option of locations$ | async" [value]="option">
+    <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let option of locations$ | async" [value]="option.name" (click)="getWeather(option)">
             {{ option.name }} - {{option.country}}
         </mat-option>
     </mat-autocomplete>
@@ -10,8 +10,8 @@
 
 <div *ngIf="(weatherData$ | async) as weatherData">
     <mat-card class="mat-elevation-z5 current-weather">
-        <mat-card-header>
-            <mat-card-title>{{selectedLocation.name}}'s weather</mat-card-title>
+        <mat-card-header *ngIf="(selectedLocation$ | async) as location">
+            <mat-card-title>{{location?.name}}'s weather</mat-card-title>
         </mat-card-header>
         <mat-card-content>
             <div class="flex-row">
