@@ -9,6 +9,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorInterceptor } from './shared/error.interceptor.service';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { HashLocationStrategy, LocationStrategy  } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { EffectsModule } from '@ngrx/effects';
       useClass: ErrorInterceptor,
       multi: true,
     },
+    {provide : LocationStrategy , useClass: HashLocationStrategy}
   ],  
   bootstrap: [AppComponent]
 })
