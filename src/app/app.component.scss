@@ -6,4 +6,23 @@
     margin-right: 10px;
     text-decoration: none;
     color: white;
+    display: flex; /* Use flexbox for layout */
+    align-items: center; /* Vertically align the content */
+}
+
+.toolbar-link:hover{
+    color: rgb(253, 202, 202);
+}
+
+.toolbar{
+    background-color: #DE2D31;
+}
+
+.logo{
+    width: 100px;
+    margin-right: 30px;
+}
+
+.toolbar-icon{
+    margin-right: 5px;
 }

@@ -14,6 +14,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
+import { MatIconModule } from '@angular/material/icon';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 @NgModule({
   declarations: [],
@@ -33,6 +35,8 @@ import { MatSortModule } from '@angular/material/sort';
     MatSnackBarModule,
     MatTableModule,
     MatSortModule,
+    MatIconModule,
+    MatGridListModule
   ],
   exports: [
     FormsModule,
@@ -49,6 +53,8 @@ import { MatSortModule } from '@angular/material/sort';
     MatSnackBarModule,
     MatTableModule,
     MatSortModule,
+    MatIconModule,
+    MatGridListModule
   ]
 })
 export class SharedModule { }

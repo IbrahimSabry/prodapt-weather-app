@@ -1,6 +1,8 @@
-<h3>Search for your location:</h3>
-<mat-form-field>
-    <input matInput [formControl]="searchInput" [matAutocomplete]="auto">
+<mat-form-field appearance="fill" style="width: 100%;">
+    <mat-label>Search for your city</mat-label>
+    <mat-icon matPrefix>search</mat-icon>
+    <input matInput [formControl]="searchInput" type="text" placeholder="Search for your city" [matAutocomplete]="auto">
+
     <mat-autocomplete #auto="matAutocomplete">
         <mat-option *ngFor="let option of locations$ | async" [value]="option.name" (click)="getWeather(option)">
             {{ option.name }} - {{option.country}}
@@ -8,45 +10,57 @@
     </mat-autocomplete>
 </mat-form-field>
 
-<div *ngIf="(weatherData$ | async) as weatherData">
-    <mat-card class="mat-elevation-z5 current-weather">
-        <mat-card-header *ngIf="(selectedLocation$ | async) as location">
-            <mat-card-title>{{location?.name}}'s weather</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-            <div class="flex-row">
-                <mat-card class="temp">
-                    <mat-card-subtitle>Today: {{weatherData.current.dt* 1000 | date:'fullDate' }}</mat-card-subtitle>
-                    <span>{{weatherData.current.temp}} C</span>
-                    <span>Feels like {{weatherData.current.feels_like}} C</span>
-                    <span>{{weatherData.current.weather[0].description}}</span>
-                </mat-card>
-            </div>
-            <br>
-            <h3>The next 5 days forcast:</h3>
-            <div class="mat-elevation-z8">
-                <table mat-table mat-table [dataSource]="forcastDataSource" matSortDisableClear
-                    matSort>
+<div *ngIf="(weatherData$ | async) as weatherData; else elseBlock">
 
-                    <ng-container matColumnDef="date">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="reverseSort()">Day</th>
-                        <td mat-cell *matCellDef="let row">{{ row.dt * 1000 | date:'fullDate' }}</td>
-                    </ng-container>
+    <div class="container">
+                <div *ngIf="(selectedLocation$ | async) as location">
+                    <h1 class="city">{{location?.name}}, {{location.country}}</h1>
+                    <h4 class="date text-danger">{{weatherData.current.dt* 1000 | date:'short' }} -
+                        <span>{{weatherData.current.weather[0].description}}</span>
+                    </h4>
+                    <h1 class="temp">
+                        {{weatherData.current.temp}} C 
+                        <img [src]="'https://openweathermap.org/img/w/' + weatherData.current.weather[0].icon + '.png'" alt="Weather Icon">
+                    </h1>
+                    <span class="feels-like">Feels like {{weatherData.current.feels_like}} C</span>
+                    <span class="feels-like"> Humidity: {{weatherData.current.humidity}}</span>
+                </div>
+    </div>
+    <br>
+    <div class="forcast">
+        <h2>5 days forcast:</h2>
+        <div class="mat-elevation-z8">
+            <table mat-table mat-table [dataSource]="forcastDataSource" matSortDisableClear matSort>
+    
+                <ng-container matColumnDef="date">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="reverseSort()">Day</th>
+                    <td mat-cell *matCellDef="let row">{{ row.dt * 1000 | date:'EEE, MMM d' }}
+                        <img [src]="'https://openweathermap.org/img/w/' + row.weather[0].icon + '.png'" alt="Weather Icon">
+                        {{row.weather[0].description}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="maxTemp">
+                    <th mat-header-cell *matHeaderCellDef>Maximum Tempreture</th>
+                    <td mat-cell *matCellDef="let row">{{ row.temp.max }}</td>
+                </ng-container> 
+                <ng-container matColumnDef="minTemp">
+                    <th mat-header-cell *matHeaderCellDef>Minimum Tempreture</th>
+                    <td mat-cell *matCellDef="let row">{{ row.temp.min }}</td>
+                </ng-container>
+                <ng-container matColumnDef="humidity">
+                    <th mat-header-cell *matHeaderCellDef>Humidity</th>
+                    <td mat-cell *matCellDef="let row">{{ row.humidity }}</td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+        </div>
+    </div>
 
-                    <ng-container matColumnDef="minTemp">
-                        <th mat-header-cell *matHeaderCellDef>Minimum Tempreture</th>
-                        <td mat-cell *matCellDef="let row">{{ row.temp.min }}</td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="maxTemp">
-                        <th mat-header-cell *matHeaderCellDef>Maximum Tempreture</th>
-                        <td mat-cell *matCellDef="let row">{{ row.temp.max }}</td>
-                    </ng-container>
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-                </table>
-            </div>
-        </mat-card-content>
-    </mat-card>
 
 </div>
+<ng-template #elseBlock>
+    <div class="no-data">
+        <img src="../../../assets/imgs/no-data.svg" />
+    </div>
+</ng-template>

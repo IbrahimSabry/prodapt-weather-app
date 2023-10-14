@@ -1,7 +1,14 @@
 <!-- src/app/home/home.component.html -->
-<mat-toolbar color="primary">
-  <a routerLink="/" class="toolbar-link">Home</a>
-  <a routerLink="/weather" class="toolbar-link">Weather</a>
+<mat-toolbar class="toolbar">
+  <img src="../assets/imgs/prodapt-white.svg" class="logo" />
+  <a routerLink="/" class="toolbar-link">
+    <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="home" class="toolbar-icon"></mat-icon>
+    <span>Home</span>
+  </a>
+  <a routerLink="/weather" class="toolbar-link">
+    <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="cloud_queu" class="toolbar-icon"></mat-icon>
+    <span>Weather</span>
+  </a>
 </mat-toolbar>
 
 <div class="container">

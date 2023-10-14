@@ -22,7 +22,7 @@ interface ICurrentWeather {
     wind_speed: number;
     wind_deg: number;
     wind_gust: number;
-    weather: IWeatherCondition[];
+    weather: IWeather[];
     rain: {
         '1h': number;
     };
@@ -48,7 +48,7 @@ export interface IDailyForecast {
     wind_speed: number;
     wind_deg: number;
     wind_gust: number;
-    weather: IWeatherCondition[];
+    weather: IWeather[];
     clouds: number;
     pop: number;
     rain: number;
@@ -64,7 +64,7 @@ interface ITemperature {
     morn: number;
 }
 
-interface IWeatherCondition {
+interface IWeather {
     id: number;
     main: string;
     description: string;
