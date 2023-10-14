@@ -10,6 +10,8 @@ mat-card::ng-deep.mat-card-header-text {
     display: flex;
     flex-direction: row;
     max-width: 350px;
+    justify-content: center;
+    align-items: center;
      div {
         flex: 50%;
         padding: 10px;

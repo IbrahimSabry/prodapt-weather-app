@@ -2,7 +2,6 @@ import { Component, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { IWeatherData, IDailyForecast, ILocation } from '../WeatherDTO';
 import { Observable, Subscription, debounceTime, filter, map, tap } from 'rxjs';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Store } from '@ngrx/store';
 import * as AppActions from '../../store/app.actions';
 import { selectLocationsData, selectSelectedLocationData, selectWeatherData } from '../../store/app.selectors';
