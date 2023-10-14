@@ -1,13 +1,13 @@
 .container {
-    margin: 5%;
+    margin-top: 5%;
 }
 
 .toolbar-link {
     margin-right: 10px;
     text-decoration: none;
     color: white;
-    display: flex; /* Use flexbox for layout */
-    align-items: center; /* Vertically align the content */
+    display: flex;
+    align-items: center;
 }
 
 .toolbar-link:hover{
