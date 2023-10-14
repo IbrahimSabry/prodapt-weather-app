@@ -1,4 +1,4 @@
-<h3>Search for Location:</h3>
+<h3>Search for your location:</h3>
 <mat-form-field>
     <input matInput [formControl]="searchInput" [matAutocomplete]="auto">
     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayLocationName" (optionSelected)="getWeather($event)">
