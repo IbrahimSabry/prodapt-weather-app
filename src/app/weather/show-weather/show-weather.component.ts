@@ -23,7 +23,7 @@ export class ShowWeatherComponent implements OnDestroy {
   selectedLocationSubscription!: Subscription;
   weatherSubscription!: Subscription;
   forcastDataSource = new MatTableDataSource<IDailyForecast>();
-  displayedColumns: string[] = ['date', 'minTemp', 'maxTemp', 'humidity'];
+  displayedColumns: string[] = ['date', 'status', 'minTemp', 'maxTemp', 'humidity'];
 
   constructor(private store: Store) { }
 
