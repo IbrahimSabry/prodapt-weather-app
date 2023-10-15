@@ -1,27 +1,48 @@
-# ProdaptWeatherApp
+Prodapt Weather App
+The Angular Weather App is a simple web application that allows users to view the current weather and 5-day forecast for a selected city. This project is part of a technical interview test for Prodapt.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.6.
+Weather App Screenshot
 
-## Development server
+Features
+Current Weather: View the current weather conditions for a city.
+5-Day Forecast: Get a 5-day weather forecast for the selected city.
+Search for Cities: Search for cities to view their weather information.
+Prerequisites
+Node.js and npm: Make sure you have Node.js (v14 or higher) and npm installed on your system.
+Getting Started
+To get the Weather App up and running on your local machine, follow these steps:
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Clone the Repository:
 
-## Code scaffolding
+bash
+Copy code
+git clone https://github.com/IbrahimSabry/prodapt-weather-app.git
+cd prodapt-weather-app
+Install Dependencies:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+bash
+Copy code
+npm install
+Run the Application:
 
-## Build
+bash
+Copy code
+ng serve
+View the App:
+Open your web browser and navigate to http://localhost:4200/.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Usage
+Enter a city name in the search bar, then a list of matching cities with your entered text, and select one of the list.
+The current weather and 5-day forecast for the selected city will be displayed.
+You can switch to other cities using the search feature.
 
-## Running unit tests
+Technologies Used
+HTML, CSS, Typescript, Angular, NGRX, Angular Material, Bootstrap and Docker 
+OpenWeather API: Used to fetch weather data.
+License
+This project is licensed under the MIT License.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Acknowledgments
+Weather data provided by OpenWeatherMap.
+Contact
+For questions or inquiries, please contact [Ibrahim Sabry] at [eng.esabry@gmail.com].
