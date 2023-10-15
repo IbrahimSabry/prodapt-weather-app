@@ -3,9 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from './material.module';
+import { NoDataComponent } from './no-data/no-data.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    NoDataComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -14,6 +17,7 @@ import { MaterialModule } from './material.module';
     MaterialModule
   ],
   exports: [
+    NoDataComponent,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,

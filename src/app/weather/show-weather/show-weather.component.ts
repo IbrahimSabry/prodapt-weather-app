@@ -19,7 +19,7 @@ import { WEATHER_BASE_URL } from '../../shared/URLS';
   styleUrls: ['./show-weather.component.scss'],
 })
 export class ShowWeatherComponent implements OnInit, OnDestroy {
-  
+
   searchInput = new FormControl();
   locations$!: Observable<ILocation[]>;
   selectedLocation$!: Observable<ILocation>;
@@ -31,7 +31,7 @@ export class ShowWeatherComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['date', 'status', 'minTemp', 'maxTemp', 'humidity'];
   imgPath = `${WEATHER_BASE_URL}img/w/`;
 
-  constructor(private store: Store) {}
+  constructor(private store: Store) { }
 
   ngOnInit(): void {
     this.watchTheState();
@@ -72,7 +72,7 @@ export class ShowWeatherComponent implements OnInit, OnDestroy {
   roundTemp(value: number): number {
     return Math.round(value);
   }
-  
+
   reverseSort() {
     this.forcastDataSource.data = this.forcastDataSource.data.slice().reverse();
   }
