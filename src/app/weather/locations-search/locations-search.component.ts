@@ -29,7 +29,7 @@ export class LocationsSearchComponent implements OnInit, OnDestroy {
     this.searchTextSubscriber();
   }
 
-  watchTheState() {
+  watchTheState(): void {
     this.locations$ = this.store.pipe(select(selectLocationsData));
     this.selectedLocation$ = this.store.pipe(select(selectSelectedLocationData));
     this.selectedLocationSubscription = this.selectedLocation$.subscribe((data) => {
@@ -37,7 +37,7 @@ export class LocationsSearchComponent implements OnInit, OnDestroy {
     });
   }
 
-  searchTextSubscriber() {
+  searchTextSubscriber(): void {
     this.searchInputSubscription = this.searchInput.valueChanges.pipe(
       debounceTime(300), //wait 300 ms after the user enters each character
       filter((searchText) => !!searchText) //assure that the search input have value 

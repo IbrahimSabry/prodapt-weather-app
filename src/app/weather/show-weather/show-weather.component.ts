@@ -31,7 +31,7 @@ export class ShowWeatherComponent implements OnInit, OnDestroy {
     this.watchTheState();
   }
 
-  watchTheState() {
+  watchTheState(): void {
     this.weatherData$ = this.store.pipe(select(selectWeatherData));
     this.weatherDataSubscription = this.weatherData$.subscribe((data) => {
       this.forcastDataSource.data = data?.daily;
@@ -53,7 +53,7 @@ export class ShowWeatherComponent implements OnInit, OnDestroy {
     return Math.round(value);
   }
 
-  reverseSort() {
+  reverseSort(): void {
     this.forcastDataSource.data = this.forcastDataSource.data.slice().reverse();
   }
 
