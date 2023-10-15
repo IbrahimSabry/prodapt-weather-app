@@ -1,13 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
-import { debounceTime, filter } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
 import { MatTableDataSource } from '@angular/material/table';
 import * as AppActions from '../../store/app.actions';
 import { ILocation, IWeatherData, IDailyForecast } from '../WeatherDTO';
 import {
-  selectLocationsData,
   selectSelectedLocationData,
   selectWeatherData,
 } from '../../store/app.selectors';
@@ -20,13 +17,10 @@ import { WEATHER_BASE_URL } from '../../shared/URLS';
 })
 export class ShowWeatherComponent implements OnInit, OnDestroy {
 
-  searchInput = new FormControl();
-  locations$!: Observable<ILocation[]>;
   selectedLocation$!: Observable<ILocation>;
-  weatherData$!: Observable<IWeatherData>;
-  searchLocationSubscription!: Subscription;
   selectedLocationSubscription!: Subscription;
-  weatherSubscription!: Subscription;
+  weatherData$!: Observable<IWeatherData>;
+  weatherDataSubscription!: Subscription;
   forcastDataSource = new MatTableDataSource<IDailyForecast>();
   displayedColumns: string[] = ['date', 'status', 'minTemp', 'maxTemp', 'humidity'];
   imgPath = `${WEATHER_BASE_URL}img/w/`;
@@ -35,38 +29,24 @@ export class ShowWeatherComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.watchTheState();
-    this.searchTextSubscriber();
-    this.weatherSubscription = this.weatherData$.subscribe((data) => {
-      this.forcastDataSource.data = data?.daily;
-    });
   }
 
   watchTheState() {
-    this.locations$ = this.store.pipe(select(selectLocationsData));
     this.weatherData$ = this.store.pipe(select(selectWeatherData));
+    this.weatherDataSubscription = this.weatherData$.subscribe((data) => {
+      this.forcastDataSource.data = data?.daily;
+    });
+
     this.selectedLocation$ = this.store.pipe(select(selectSelectedLocationData));
     this.selectedLocationSubscription = this.selectedLocation$.subscribe((data) => {
-      this.searchInput.patchValue(data?.name);
+      this.store.dispatch(
+        AppActions.loadWeatherData({
+          lat: data.lat,
+          lon: data.lon,
+          numberOfDays: 5,
+        })
+      );
     });
-  }
-
-  searchTextSubscriber() {
-    this.searchLocationSubscription = this.searchInput.valueChanges
-      .pipe(debounceTime(300), filter((searchText) => !!searchText))
-      .subscribe((searchText) => {
-        this.store.dispatch(AppActions.loadLocationsData({ searchText }));
-      });
-  }
-
-  getWeather(location: ILocation): void {
-    this.store.dispatch(AppActions.loadSelectedLocation({ data: location }));
-    this.store.dispatch(
-      AppActions.loadWeatherData({
-        lat: location.lat,
-        lon: location.lon,
-        numberOfDays: 5,
-      })
-    );
   }
 
   roundTemp(value: number): number {
@@ -78,8 +58,7 @@ export class ShowWeatherComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.searchLocationSubscription?.unsubscribe();
+    this.weatherDataSubscription?.unsubscribe();
     this.selectedLocationSubscription?.unsubscribe();
-    this.weatherSubscription?.unsubscribe();
   }
 }

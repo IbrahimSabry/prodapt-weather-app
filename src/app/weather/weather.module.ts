@@ -7,12 +7,14 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { LocationsReducer, SelectedLocationReducer, weatherReducer } from '../store/app.reducer';
 import { WeatherEffects } from '../store/app.effects';
+import { LocationsSearchComponent } from './locations-search/locations-search.component';
 
 
 
 @NgModule({
   declarations: [
-    ShowWeatherComponent
+    ShowWeatherComponent,
+    LocationsSearchComponent
   ],
   imports: [
     CommonModule,
