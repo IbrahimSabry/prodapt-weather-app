@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ShowWeatherComponent } from './show-weather.component';
+import { StoreModule } from '@ngrx/store';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { LocationsSearchComponent } from '../locations-search/locations-search.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('ShowWeatherComponent', () => {
   let component: ShowWeatherComponent;
@@ -8,7 +12,8 @@ describe('ShowWeatherComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ShowWeatherComponent]
+      imports: [StoreModule.forRoot({}), SharedModule, BrowserAnimationsModule],
+      declarations: [ShowWeatherComponent, LocationsSearchComponent]
     });
     fixture = TestBed.createComponent(ShowWeatherComponent);
     component = fixture.componentInstance;
